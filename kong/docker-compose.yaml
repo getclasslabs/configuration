@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+
+  getclass_kong:
+    image: kong:0.9.5
+    depends_on:
+        - kong_postgres
+    deploy:
+        mode: replicated
+        replicas: 1
+        update_config:
+            parallelism: 1
+            order: start-first
+    command: "kong start"
+    #command: "kong start migrations up"
+    ports:
+        - 8000:8000
+        - 8001:8001
+    environment:
+        - KONG_DATABASE=postgres
+        - KONG_PG_HOST=getclass_postgresql
+        - KONG_PG_USER=postgres
+        - KONG_PG_PASSWORD=pass
+        - KONG_PG_DATABASE=kong
+        - KONG_LOG_LEVEL=error
+        - KONG_PROXY_ACCESS_LOG=off
+    networks:
+        main:
+            aliases:
+                - getclass_kong
+
+  getclass_kong_dashboard:
+      image: robertgwillard/kong-dashboard:v1.1.2
+      ports:
+          - 8002:8080
+      networks:
+          main:
+              aliases:
+                  - getclass_kong_dashboard
+  kong_postgres:
+    image: postgres:9.6
+    container_name: "postgres"
+    environment:
+      - POSTGRES_DB=kong
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pass
+      - TZ=GMT
+    volumes:
+      - "./postgres:/var/lib/postgresql/data"
+    ports:
+      - 5432:5432
+    networks:
+        main:
+            aliases:
+                - getclass_postgresql
+
+networks:
+    main:
+        external: true
