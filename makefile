@@ -1,4 +1,4 @@
-init:
+start:
 	sh scripts/init.sh
 
 stop:
