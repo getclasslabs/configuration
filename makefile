@@ -1,5 +1,5 @@
 start:
-	sh scripts/init.sh
+	bash scripts/init.sh
 
 stop:
 	sh scripts/stop.sh

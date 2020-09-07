@@ -2,4 +2,4 @@ kong/postgres/*
 !kong/postgres/.gitkeep
 
 mysql/data/*
-!mysql/data/.gitkeep
+!mysql/data/gitkeep
