@@ -1,3 +1,6 @@
+create:
+	bash scripts/create.sh
+
 start:
 	bash scripts/init.sh
 
